@@ -7,13 +7,13 @@ class KeyboardInteruptions:
     def listenInterruption(self):
         if msvcrt.kbhit():
             char = msvcrt.getwch()
-            if char == "I":
+            if char == "I" or char == "i":
                 self.__statusInterrpution = 1
-            elif char == "E":
+            elif char == "E" or char == "e":
                 self.__statusInterrpution = 2
-            elif char == "P":
+            elif char == "P" or char == "p":
                 self.__statusInterrpution = 3
-            elif char == "C" and self.__statusInterrpution == 3:
+            elif (char == "C" or char == "c") and self.__statusInterrpution == 3:
                 self.__statusInterrpution = 4
 
     def getStatusInterruption(self):

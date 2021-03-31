@@ -22,8 +22,9 @@ class QueueReadyProcess:
         return len(self.__queue)
 
     def print_queue(self, x, y, number_process_new):
-        print(Fore.LIGHTRED_EX + Cursor.UP(y) + Cursor.FORWARD(x) +
+        print(Fore.RED + Cursor.UP(y) + Cursor.FORWARD(x) +
               "Numero de procesos nuevos: ", number_process_new)
+        print(Fore.LIGHTGREEN_EX + Cursor.FORWARD(x) + "Procesos listos")
         print(Fore.RESET)
         for index in range(1, 6):
             if index >= len(self.__queue):

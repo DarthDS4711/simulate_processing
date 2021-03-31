@@ -8,7 +8,7 @@ def main():
     vist = VistProcess(addProcess.get_new_process())
     vist.add_process_ready()
     vist.printScreen()
-    input()
+    input("Fin del programa")
 
 
 if __name__ == '__main__':
