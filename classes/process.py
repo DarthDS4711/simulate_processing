@@ -55,10 +55,12 @@ class Process:
         return chain
 
     def print_counters_process(self):
+        is_terminated = "terminado" if self.__time_service == self.__maximumTime else "no terminado"
         chain = "ID: " + str(self.__numberProgram) + " TLL: " + str(self.__time_arrival) \
                 + " TF: " + str(self.__time_finish) + " TW: " + str(self.__time_wait) + \
                 " TS: " + str(self.__time_service) + " TRET: " + \
-                str(self.__time_return) + " TRES: " + str(self.__time_response)
+                str(self.__time_return) + " TRES: " + str(self.__time_response) +\
+                " status: " + is_terminated + " TME: " + str(self.__maximumTime)
         return chain
 
     def print_process_bloqued(self):

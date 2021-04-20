@@ -121,6 +121,7 @@ class VistProcess:
             self.__interruption.listenInterruption()
             self.__printProcessActual(process)
             self.__printEnqueueBloquedProcess()
+            self.__countProgram += 1
             code_continue = self.__statusOfInterruptionInside()
             time_transcurred += 1
             if code_continue == 2:
@@ -130,7 +131,7 @@ class VistProcess:
             if process is None:
                 if self.__continue_print():
                     time_transcurred -= 1
-            self.__countProgram += 1
+   
 
     def __realizeOperation(self, process):
         number_1 = process.getFirstNumber()
