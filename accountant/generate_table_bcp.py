@@ -15,7 +15,5 @@ def __calculate_bcp_per_process(table_bcp, clock):
             if process.get_time_finish() == 0:
                 calculate_accountant_process(process, clock)
                 process.set_time_finish(0)
-            else:
-                calculate_accountant_process(process, clock)
             table_bcp[index] = process
 

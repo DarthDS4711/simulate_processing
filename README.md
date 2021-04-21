@@ -45,7 +45,8 @@ Contributors names and contact info
 * Daniel Santiago Alatorre 
 
 ## Version History
-
+* 2.2.1 S (Semi release)
+    * Corrección errores de la tabla bcp generada con la tecla b
 * 2.2.1 test
     * Inclusión de los 5 estados
     * Implementación de la entrada/salida por teclado
