@@ -3,15 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="78aa046d-ee71-41c6-872e-fd100f140530" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/accountant/calculate_accountant.py" beforeDir="false" afterPath="$PROJECT_DIR$/accountant/calculate_accountant.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/classes/automaticGenererateProcess.py" beforeDir="false" afterPath="$PROJECT_DIR$/classes/automaticGenererateProcess.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/classes/interruptions/keyboardInterruptions.py" beforeDir="false" afterPath="$PROJECT_DIR$/classes/interruptions/keyboardInterruptions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/classes/listCompleteProcess.py" beforeDir="false" afterPath="$PROJECT_DIR$/classes/listCompleteProcess.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/classes/listProcessNew.py" beforeDir="false" afterPath="$PROJECT_DIR$/classes/listProcessNew.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/classes/process.py" beforeDir="false" afterPath="$PROJECT_DIR$/classes/process.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/classes/queue/queueBloquedProcess.py" beforeDir="false" afterPath="$PROJECT_DIR$/classes/queue/queueBloquedProcess.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/classes/queue/queueReadyProcess.py" beforeDir="false" afterPath="$PROJECT_DIR$/classes/queue/queueReadyProcess.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vist/vistProcess.py" beforeDir="false" afterPath="$PROJECT_DIR$/vist/vistProcess.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/accountant/generate_table_bcp.py" beforeDir="false" afterPath="$PROJECT_DIR$/accountant/generate_table_bcp.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -79,5 +71,17 @@
       <updated>1617131380176</updated>
     </task>
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>
