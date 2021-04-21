@@ -1,11 +1,11 @@
-from classes.listProcessNew import ListProcessNew
 from classes.listCompleteProcess import ListCompleteProcess
 from operationsMathematics.operations import executeOperation
 from classes.interruptions.keyboardInterruptions import KeyboardInteruptions
 from colorama import init, Cursor, Back, Fore
-from classes.queue.queueBloquedProcess import QueueBloquedProcess
 from classes.queue.queueReadyProcess import QueueReadyProcess
 from accountant.calculate_accountant import *
+from accountant.generate_table_bcp import *
+from generateProcess.randomDataCreateProcess import *
 from time import sleep
 import os
 
@@ -22,12 +22,14 @@ class VistProcess:
         self.__queue_new_process = list_new_process
         self.__ready_process = QueueReadyProcess()
         self.__bloqued_process = QueueBloquedProcess()
+        self.__id_last_program_to_execute = self.__queue_new_process.numberProcess() + 1
 
     def add_process_ready(self):
         while True:
             processNew = self.__queue_new_process.getActualProcess()
             if processNew is not None:
                 if self.__ready_process.number_enqueue_process() < 5:
+                    processNew.set_time_arrival(0)
                     self.__ready_process.enqueue_process_ready(processNew)
                     self.__queue_new_process.deleteLastProcess()
                 else:
@@ -56,27 +58,53 @@ class VistProcess:
         calculate_bloqued_time(self.__bloqued_process)
         sleep(1)
 
+    def __print_bcp_table_at_moment(self):
+        table_bcp = []
+        print(Cursor.DOWN(16))
+        generate_bcp_per_process(self.__queue_new_process, self.__bloqued_process,
+                                 self.__ready_process, self.__listProcessFinish,
+                                 table_bcp, self.__countProgram - 1)
+        for index in range(0, len(table_bcp)):
+            print(table_bcp[index].print_counters_process())
+
+    def __block_e_s_process(self):
+        bloqued_len_process = self.__bloqued_process.number_process_bloqued()
+        number_process = self.__ready_process.number_enqueue_process()
+        number_process += self.__queue_new_process.numberProcess()
+        if bloqued_len_process > 0 and number_process == 0:
+            self.__cursorY -= 1
+            return True
+        else:
+            return False
+
+
     def __statusOfInterruptionInside(self):
+        status_to_return = True
         status = self.__interruption.getStatusInterruption()
-        if status == 3:
+        if status == 3 or status == 6:
+            if status == 6:
+                self.__print_bcp_table_at_moment()
             while True:
                 self.__interruption.listenInterruption()
                 status = self.__interruption.getStatusInterruption()
                 if status == 4:
-                    return 1
-        if status == 1 or status == 2:
-            return 2
-        else:
-            return 3
+                    break
+                if status == 7:
+                    status_to_return = False
+                    self.__cursorY -= 1
+                    break
+        if status == 1 or status == 2 or status == 5:
+            status_to_return = False
+        return status_to_return
 
     def __statusOfInterruptionOutside(self, process):
         statusInterruption = self.__interruption.getStatusInterruption()
-        if statusInterruption == 1:
+        if statusInterruption == 1 and self.__block_e_s_process() is False:
             process.refresh_time_bloqued()
             self.__bloqued_process.enqueue_process_bloqued(process)
             self.__cursorY -= 1
             self.__ready_process.dequeue_process_ready()
-        elif statusInterruption == 2:
+        elif statusInterruption == 2 and self.__block_e_s_process() is False:
             calculate_accountant_process(process, self.__countProgram)
             self.__listProcessFinish.addProcessComplete(process)
             self.__ready_process.dequeue_process_ready()
@@ -85,6 +113,14 @@ class VistProcess:
             self.__realizeOperation(process)
             self.__listProcessFinish.addProcessComplete(process)
             self.__ready_process.dequeue_process_ready()
+        elif statusInterruption == 5:
+            add_new_process_to_simulation(self.__id_last_program_to_execute,
+                                          self.__queue_new_process)
+            self.__id_last_program_to_execute += 1
+            if self.__block_e_s_process() is True:
+                self.__cursorY += 1
+            else:
+                self.__cursorY -= 1
         self.__move_new_process()
         self.__interruption.setStatusInterruption(0)
 
@@ -124,14 +160,14 @@ class VistProcess:
             self.__countProgram += 1
             code_continue = self.__statusOfInterruptionInside()
             time_transcurred += 1
-            if code_continue == 2:
+            if code_continue is False:
                 break
             if self.__flag_unlock_process:
                 break
             if process is None:
                 if self.__continue_print():
                     time_transcurred -= 1
-   
+
 
     def __realizeOperation(self, process):
         number_1 = process.getFirstNumber()
@@ -145,6 +181,7 @@ class VistProcess:
 
     def __enqueue_process_bloqued_to_ready(self):
         process = self.__bloqued_process.getactual_process()
+        process.refresh_time_bloqued()
         self.__ready_process.enqueue_process_ready(process)
         self.__bloqued_process.dequeue_process_bloqued()
         self.__cursorY -= 1

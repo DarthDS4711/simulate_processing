@@ -35,3 +35,7 @@ class QueueBloquedProcess:
     def increment_counter_bloqued(self):
         for index in range(0, len(self.__queue)):
             self.__queue[index].increment_time_bloqued()
+
+    def create_table_bcp_actual(self, table_bcp):
+        for index in range(0, len(self.__queue)):
+            table_bcp.append(self.__queue[index])

@@ -18,5 +18,9 @@ class ListProcessNew:
         if len(self.__list) > 0:
             self.__list.pop(0)
 
+    def create_table_bcp_actual(self, table_bcp):
+        for index in range(0, len(self.__list)):
+            table_bcp.append(self.__list[index])
+
 
 

@@ -17,6 +17,7 @@ def calculate_accountant_process(process, count_program):
 def calculate_bloqued_time(queue_bloqued_process):
     queue_bloqued_process.increment_counter_bloqued()
 
+
 def is_time_bloqued_finish(queue_bloqued_process):
     process = queue_bloqued_process.getactual_process()
     if process is not None:

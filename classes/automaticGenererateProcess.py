@@ -8,16 +8,20 @@ import os
 class AutomaticGenerateProcess:
     def __init__(self):
         self.__tableId = TableIndex()
-        self.__numberProgram = 1
+        self.__actual_id_last_process = 1
         self.__list_new_process = ListProcessNew()
 
     def addingProcess(self):
         numberMaximumProcess = int(input("Ingresa el numero de procesos a ejecutar: "))
         if numberMaximumProcess == 0:
             numberMaximumProcess = 1
+        os.system("cls")
         for index in range(0, numberMaximumProcess):
-            process = self.__createProcess()
+            process = self.createProcess()
             self.__list_new_process.addProcess(process)
+
+    def set_actual_id_process(self, id_process):
+        self.__actual_id_last_process = id_process
 
     def __optionsOperations(self):
         operation = random.randint(1, 5)
@@ -32,15 +36,14 @@ class AutomaticGenerateProcess:
         elif operation == 5:
             return "mod"
 
-    def __createProcess(self):
-        os.system("cls")
+    def createProcess(self):
         operation = self.__optionsOperations()
         number1 = random.randint(0, 200)
         number2 = random.randint(1, 200)
         timeMaximumProcess = random.randint(5, 15)
-        idProgram = self.__numberProgram
+        idProgram = self.__actual_id_last_process
         process = Process(operation, timeMaximumProcess, idProgram, number1, number2)
-        self.__numberProgram += 1
+        self.__actual_id_last_process += 1
         return process
 
     def get_new_process(self):

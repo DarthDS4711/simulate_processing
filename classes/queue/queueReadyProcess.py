@@ -31,3 +31,7 @@ class QueueReadyProcess:
                 print(" ", end="\n")
             else:
                 print(Cursor.FORWARD(x) + "process: ", self.__queue[index], end="\n")
+
+    def create_table_bcp_actual(self, table_bcp):
+        for index in range(0, len(self.__queue)):
+            table_bcp.append(self.__queue[index])

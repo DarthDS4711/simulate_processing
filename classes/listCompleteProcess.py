@@ -26,3 +26,8 @@ class ListCompleteProcess:
         for index in range(0, len(self.__list)):
             print(self.__list[index].print_counters_process())
 
+    def create_table_bcp_actual(self, table_bcp):
+        for index in range(0, len(self.__list)):
+            table_bcp.append(self.__list[index])
+
+
