@@ -1,11 +1,11 @@
 # Simulación FCFS
 
-Este proyecto consiste en la simulación del algoritmo FCFS
+Este proyecto consiste en la simulación del algoritmo Round Robin
 
 ## Description
 
 Este proyecto tiene como propósito simular el algortimo de 
-planificación FCFS, en cual esta basado en el diagrama de 
+planificación Round Robin, en cual esta basado en el diagrama de 
 cinco estados, como lo son listo, nuevo, bloqueado y
 terminado por citar algunos
 
@@ -45,6 +45,11 @@ Contributors names and contact info
 * Daniel Santiago Alatorre 
 
 ## Version History
+* 2.3.0 T1 (Beta 1)
+    * Cambio del algoritmo de planificación de FCFS a Round Robin
+    * Corrección de errores con los contadores del programa
+    * Corrección de errores por procesos ya finalizados que entran a ser ejecutados
+    * Primera beta del algoritmo Round Robin
 * 2.2.1 S (Semi release)
     * Corrección errores de la tabla bcp generada con la tecla b
 * 2.2.1 test

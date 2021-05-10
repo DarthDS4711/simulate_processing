@@ -20,6 +20,13 @@ class AutomaticGenerateProcess:
             process = self.createProcess()
             self.__list_new_process.addProcess(process)
 
+    def value_of_quantum(self):
+        quantum = int(input("Valor del quantum: "))
+        if quantum <= 0:
+            while quantum <= 0:
+                quantum = int(input("Valor del quantum: "))
+        return quantum
+
     def set_actual_id_process(self, id_process):
         self.__actual_id_last_process = id_process
 

@@ -6,7 +6,7 @@ class Process:
         self.__number1 = number1
         self.__number2 = number2
         self.__result = "Error"
-        self.__timeTranscurred = 0
+        self.__timeTranscurred = -1
         self.__time_arrival = -1
         self.__time_finish = 0
         self.__time_return = 0
@@ -15,12 +15,16 @@ class Process:
         self.__time_service = 0
         self.__execute_first_time = False
         self.__time_bloqued = 0
+        self.__quantum = -1
 
     def setTimeTranscurred(self, time):
         self.__timeTranscurred = time
 
     def getTimeTranscurred(self):
         return self.__timeTranscurred
+
+    def increment_time_transcurred(self):
+        self.__timeTranscurred += 1
 
     def getOperation(self):
         return self.__operation
@@ -37,10 +41,22 @@ class Process:
     def getSecondNumber(self):
         return self.__number2
 
+    def get_quantum(self):
+        return self.__quantum
+
+    def set_quantum(self, quantum):
+        self.__quantum = quantum
+
+    def increment_quantum(self):
+        self.__quantum += 1
+
     def __str__(self):
+        time = self.__timeTranscurred if self.__timeTranscurred >= 0 else 0
+        quantum = self.__quantum if self.__quantum >= 0 else 0
         chain = "ID: " + str(self.__numberProgram) + " " + \
                 "TME: " + str(self.__maximumTime) + " " + \
-                "TT: " + str(self.__timeTranscurred)
+                "TT: " + str(time) + " " + \
+                "QTM: " + str(quantum)
         return chain
 
     def getResult(self):
@@ -126,7 +142,7 @@ class Process:
         self.__time_wait = self.__time_return - self.__time_service
 
     def set_time_service(self):
-        self.__time_service = self.__timeTranscurred - 1
+        self.__time_service = self.__timeTranscurred
 
     def get_flag_execute(self):
         return self.__execute_first_time

@@ -13,7 +13,7 @@ init()
 
 
 class VistProcess:
-    def __init__(self, list_new_process):
+    def __init__(self, list_new_process, quantum):
         self.__countProgram = 0
         self.__cursorY = 5
         self.__listProcessFinish = ListCompleteProcess()
@@ -23,6 +23,7 @@ class VistProcess:
         self.__ready_process = QueueReadyProcess()
         self.__bloqued_process = QueueBloquedProcess()
         self.__id_last_program_to_execute = self.__queue_new_process.numberProcess() + 1
+        self.__quantum = quantum
 
     def add_process_ready(self):
         while True:
@@ -53,7 +54,7 @@ class VistProcess:
         print("\r" + Fore.LIGHTYELLOW_EX + "Contador del programa: ",
               str(self.__countProgram), end="")
         print(Fore.RESET)
-        print(Cursor.UP(15))
+        print(Cursor.UP(16))
         self.__flag_unlock_process = is_time_bloqued_finish(self.__bloqued_process)
         calculate_bloqued_time(self.__bloqued_process)
         sleep(1)
@@ -77,7 +78,6 @@ class VistProcess:
         else:
             return False
 
-
     def __statusOfInterruptionInside(self):
         status_to_return = True
         status = self.__interruption.getStatusInterruption()
@@ -97,6 +97,12 @@ class VistProcess:
             status_to_return = False
         return status_to_return
 
+    def __return_process_to_ready(self, process):
+        process.set_quantum(0)
+        self.__ready_process.enqueue_process_ready(process)
+        self.__ready_process.dequeue_process_ready()
+        self.__cursorY -= 1
+
     def __statusOfInterruptionOutside(self, process):
         statusInterruption = self.__interruption.getStatusInterruption()
         if statusInterruption == 1 and self.__block_e_s_process() is False:
@@ -109,10 +115,18 @@ class VistProcess:
             self.__listProcessFinish.addProcessComplete(process)
             self.__ready_process.dequeue_process_ready()
         elif statusInterruption == 0 or statusInterruption == 4:
-            calculate_accountant_process(process, self.__countProgram)
-            self.__realizeOperation(process)
-            self.__listProcessFinish.addProcessComplete(process)
-            self.__ready_process.dequeue_process_ready()
+            is_finished = process.getMaximumTime() == process.getTimeTranscurred()
+            is_end_quantum = process.get_quantum() == self.__quantum
+            if is_finished is True and (is_end_quantum is True or is_end_quantum is False):
+                calculate_accountant_process(process, self.__countProgram)
+                self.__realizeOperation(process)
+                self.__listProcessFinish.addProcessComplete(process)
+                self.__ready_process.dequeue_process_ready()
+            else:
+                process.set_quantum(0)
+                self.__ready_process.enqueue_process_ready(process)
+                self.__ready_process.dequeue_process_ready()
+                self.__cursorY -= 1
         elif statusInterruption == 5:
             add_new_process_to_simulation(self.__id_last_program_to_execute,
                                           self.__queue_new_process)
@@ -129,19 +143,22 @@ class VistProcess:
         operation = " "
         timeRest = " "
         time = " "
+        value_quantum = " "
         if process is not None:
+            process.increment_time_transcurred()
+            process.increment_quantum()
             maximunTime = process.getMaximumTime()
             idProgram = process.getNumberProgram()
             operation = str(process.getFirstNumber()) + " " + process.getOperation() + " " + str(
                 process.getSecondNumber())
             time = maximunTime - process.getTimeTranscurred()
             timeRest = process.getTimeTranscurred()
+            value_quantum = process.get_quantum()
         print("\r" + Cursor.FORWARD(46) + "Operacion: " + operation, end="\n")
         print("\r" + Cursor.FORWARD(46) + "ID: " + str(idProgram), end="\n")
         print("\r" + Cursor.FORWARD(46) + "Tiempo transcurrido: " + str(timeRest) +
               " \n" + Cursor.FORWARD(46) + "Tiempo restante: " + str(time) + " ", end="\n")
-        if process is not None:
-            process.setTimeTranscurred(timeRest + 1)
+        print("\r" + Cursor.FORWARD(46) + "Quantum restante: " + str(value_quantum), end="\n")
 
     def __continue_print(self):
         number_process = self.__ready_process.number_enqueue_process()
@@ -150,16 +167,22 @@ class VistProcess:
         return contains_process
 
     def __refreshVisualInformation(self, process):
-        time_transcurred = process.getTimeTranscurred() if process is not None else 0
+        time_transcurred = process.getTimeTranscurred() if process is not None else -1
         time_maximum = process.getMaximumTime() if process is not None else 0
+        value_quantum = process.get_quantum() if process is not None else -1
         calculate_time_response(process, self.__countProgram)
-        while time_transcurred <= time_maximum:
+        if time_transcurred == time_maximum:
+            self.__printProcessActual(None)
+            self.__printEnqueueBloquedProcess()
+            self.__countProgram += 1
+        while (time_transcurred < time_maximum) and (value_quantum < self.__quantum):
             self.__interruption.listenInterruption()
             self.__printProcessActual(process)
             self.__printEnqueueBloquedProcess()
             self.__countProgram += 1
             code_continue = self.__statusOfInterruptionInside()
             time_transcurred += 1
+            value_quantum += 1
             if code_continue is False:
                 break
             if self.__flag_unlock_process:
@@ -167,7 +190,7 @@ class VistProcess:
             if process is None:
                 if self.__continue_print():
                     time_transcurred -= 1
-
+                    value_quantum -= 1
 
     def __realizeOperation(self, process):
         number_1 = process.getFirstNumber()
