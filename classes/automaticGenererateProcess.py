@@ -15,7 +15,6 @@ class AutomaticGenerateProcess:
         numberMaximumProcess = int(input("Ingresa el numero de procesos a ejecutar: "))
         if numberMaximumProcess == 0:
             numberMaximumProcess = 1
-        os.system("cls")
         for index in range(0, numberMaximumProcess):
             process = self.createProcess()
             self.__list_new_process.addProcess(process)

@@ -107,6 +107,7 @@ class VistProcess:
         statusInterruption = self.__interruption.getStatusInterruption()
         if statusInterruption == 1 and self.__block_e_s_process() is False:
             process.refresh_time_bloqued()
+            process.set_quantum(-1)
             self.__bloqued_process.enqueue_process_bloqued(process)
             self.__cursorY -= 1
             self.__ready_process.dequeue_process_ready()
@@ -123,7 +124,7 @@ class VistProcess:
                 self.__listProcessFinish.addProcessComplete(process)
                 self.__ready_process.dequeue_process_ready()
             else:
-                process.set_quantum(0)
+                process.set_quantum(-1)
                 self.__ready_process.enqueue_process_ready(process)
                 self.__ready_process.dequeue_process_ready()
                 self.__cursorY -= 1
@@ -158,7 +159,7 @@ class VistProcess:
         print("\r" + Cursor.FORWARD(46) + "ID: " + str(idProgram), end="\n")
         print("\r" + Cursor.FORWARD(46) + "Tiempo transcurrido: " + str(timeRest) +
               " \n" + Cursor.FORWARD(46) + "Tiempo restante: " + str(time) + " ", end="\n")
-        print("\r" + Cursor.FORWARD(46) + "Quantum restante: " + str(value_quantum), end="\n")
+        print("\r" + Cursor.FORWARD(46) + "Quantum transcurrido: " + str(value_quantum), end="\n")
 
     def __continue_print(self):
         number_process = self.__ready_process.number_enqueue_process()
@@ -211,10 +212,11 @@ class VistProcess:
 
     def __print_information_to_console(self, flag):
         os.system("cls")
+        print(Fore.LIGHTMAGENTA_EX + "Quantum: " + str(self.__quantum), end="\n")
         process = self.__ready_process.getactual_process()
-        self.__ready_process.print_queue(1, 2, self.__queue_new_process.numberProcess())
+        self.__ready_process.print_queue(0, 2, self.__queue_new_process.numberProcess())
         print("\n")
-        self.__listProcessFinish.printListCompleteOfProcess(80, 10)
+        self.__listProcessFinish.printListCompleteOfProcess(80, 11)
         print("\n")
         print(Fore.RESET)
         print(Fore.LIGHTCYAN_EX + Cursor.FORWARD(46) +

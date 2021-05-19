@@ -45,6 +45,9 @@ Contributors names and contact info
 * Daniel Santiago Alatorre 
 
 ## Version History
+* 2.3.0 S (semi release)
+    * Corrección errores visualización tabla bcp
+    * Pre-candidata a lanzamiento
 * 2.3.0 T1 (Beta 1)
     * Cambio del algoritmo de planificación de FCFS a Round Robin
     * Corrección de errores con los contadores del programa

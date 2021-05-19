@@ -52,11 +52,9 @@ class Process:
 
     def __str__(self):
         time = self.__timeTranscurred if self.__timeTranscurred >= 0 else 0
-        quantum = self.__quantum if self.__quantum >= 0 else 0
         chain = "ID: " + str(self.__numberProgram) + " " + \
                 "TME: " + str(self.__maximumTime) + " " + \
-                "TT: " + str(time) + " " + \
-                "QTM: " + str(quantum)
+                "TT: " + str(time)
         return chain
 
     def getResult(self):
@@ -107,9 +105,12 @@ class Process:
         return chain
 
     def __calculate_counter_non_finish_process(self):
+        time_wait = self.__time_wait if self.__time_wait >= 0 else 0
+        time_service = self.__time_service if self.__time_service >= 0 else 0
+        time_res = self.__time_response if self.__time_response >= 0 else " "
         chain = "ID: " + str(self.__numberProgram) + " TLL: " + str(self.__time_arrival) \
-                + " TW: " + str(self.__time_wait) + \
-                " TS: " + str(self.__time_service) + " TRES: " + str(self.__time_response) + \
+                + " TW: " + str(time_wait) + \
+                " TS: " + str(time_service) + " TRES: " + str(time_res) + \
                 " status: en memoria" + " TME: " + str(self.__maximumTime)
         return chain
 
