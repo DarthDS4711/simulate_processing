@@ -64,7 +64,7 @@ class VistProcess:
         print(Cursor.DOWN(16))
         generate_bcp_per_process(self.__queue_new_process, self.__bloqued_process,
                                  self.__ready_process, self.__listProcessFinish,
-                                 table_bcp, self.__countProgram - 1)
+                                 table_bcp, self.__countProgram)
         for index in range(0, len(table_bcp)):
             print(table_bcp[index].print_counters_process())
 

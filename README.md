@@ -45,6 +45,9 @@ Contributors names and contact info
 * Daniel Santiago Alatorre 
 
 ## Version History
+* 2.3.0 G (release)
+    * Corrección errores visualización tabla bcp
+    * Version de lanzamiento Algoritmo Round Robin
 * 2.3.0 S (semi release)
     * Corrección errores visualización tabla bcp
     * Pre-candidata a lanzamiento
