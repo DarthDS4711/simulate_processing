@@ -48,7 +48,8 @@ class AutomaticGenerateProcess:
         number2 = random.randint(1, 200)
         timeMaximumProcess = random.randint(5, 15)
         idProgram = self.__actual_id_last_process
-        process = Process(operation, timeMaximumProcess, idProgram, number1, number2)
+        size_process = random.randint(5, 26)
+        process = Process(operation, timeMaximumProcess, idProgram, number1, number2, size_process)
         self.__actual_id_last_process += 1
         return process
 

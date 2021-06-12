@@ -10,7 +10,7 @@ class KeyboardInteruptions:
                 self.__statusInterrpution = 1
             elif char == "E" or char == "e":
                 self.__statusInterrpution = 2
-            elif char == "P" or char == "p":
+            elif (char == "P" or char == "p") or (char == "A" or char == "a"):
                 self.__statusInterrpution = 3
             elif (char == "C" or char == "c") and self.__statusInterrpution == 3:
                 self.__statusInterrpution = 4

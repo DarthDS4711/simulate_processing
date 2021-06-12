@@ -8,6 +8,8 @@ from accountant.generate_table_bcp import *
 from generateProcess.randomDataCreateProcess import *
 from time import sleep
 import os
+from classes.pagination.tableFrames import TableFrames
+
 
 init()
 
@@ -24,19 +26,26 @@ class VistProcess:
         self.__bloqued_process = QueueBloquedProcess()
         self.__id_last_program_to_execute = self.__queue_new_process.numberProcess() + 1
         self.__quantum = quantum
+        self.__table_framework = TableFrames()
 
     def add_process_ready(self):
-        while True:
+        self.__table_framework.inicialize_table_frame()
+        continue_add = True
+        while continue_add:
             processNew = self.__queue_new_process.getActualProcess()
             if processNew is not None:
                 if self.__ready_process.number_enqueue_process() < 5:
                     processNew.set_time_arrival(0)
+                    self.__table_framework.add_process_to_table(processNew)
                     self.__ready_process.enqueue_process_ready(processNew)
                     self.__queue_new_process.deleteLastProcess()
                 else:
                     break
             else:
                 break
+            continue_add = not self.__table_framework.is_full_table()
+        input()
+
 
     def __move_new_process(self):
         number_process_active = self.__ready_process.number_enqueue_process()
@@ -51,10 +60,11 @@ class VistProcess:
     def __printEnqueueBloquedProcess(self):
         print(Cursor.DOWN(2))
         self.__bloqued_process.print_queue()
+        self.__table_framework.print_table_frame(1)
         print("\r" + Fore.LIGHTYELLOW_EX + "Contador del programa: ",
               str(self.__countProgram), end="")
         print(Fore.RESET)
-        print(Cursor.UP(16))
+        print(Cursor.UP(33))
         self.__flag_unlock_process = is_time_bloqued_finish(self.__bloqued_process)
         calculate_bloqued_time(self.__bloqued_process)
         sleep(1)

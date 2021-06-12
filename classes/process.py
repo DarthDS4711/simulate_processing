@@ -1,5 +1,5 @@
 class Process:
-    def __init__(self, operation, maximumTime, numberProgram, number1, number2):
+    def __init__(self, operation, maximumTime, numberProgram, number1, number2, size_process):
         self.__operation = operation
         self.__maximumTime = maximumTime
         self.__numberProgram = numberProgram
@@ -16,6 +16,13 @@ class Process:
         self.__execute_first_time = False
         self.__time_bloqued = 0
         self.__quantum = -1
+        self.__size_process = size_process
+
+    def set_size_process(self, size):
+        self.__size_process = size
+
+    def get_size_process(self):
+        return self.__size_process
 
     def setTimeTranscurred(self, time):
         self.__timeTranscurred = time
@@ -54,7 +61,7 @@ class Process:
         time = self.__timeTranscurred if self.__timeTranscurred >= 0 else 0
         chain = "ID: " + str(self.__numberProgram) + " " + \
                 "TME: " + str(self.__maximumTime) + " " + \
-                "TT: " + str(time)
+                "TT: " + str(time) + " Size: " + str(self.__size_process)
         return chain
 
     def getResult(self):

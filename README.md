@@ -1,13 +1,15 @@
-# Simulación FCFS
+# Simulación Paginacion Simple
 
-Este proyecto consiste en la simulación del algoritmo Round Robin
+Este proyecto consiste en la simulación del algoritmo Round Robin con paginación simple
 
 ## Description
 
 Este proyecto tiene como propósito simular el algortimo de 
 planificación Round Robin, en cual esta basado en el diagrama de 
 cinco estados, como lo son listo, nuevo, bloqueado y
-terminado por citar algunos
+terminado por citar algunos. Además de incluir la paginación simple como 
+una técnica de memoria, en la que limitaremos la memoria que tenga el programa
+en ejecución.
 
 ## Getting Started
 
@@ -27,7 +29,7 @@ terminado por citar algunos
 * Se abre el archivo main.py
 * Se indica el número de procesos a ejecutar
 * Presionando I bloqueamos por 5 seg el proceso
-* Presionando P se pausa el programa
+* Presionando P o A se pausa el programa
 * Presionado N se agrega un nuevo proceso
 * Presionando B se obtiene la tabla bcp de los procesos
 * Presionando C se continua después de presionar P y B 
@@ -45,6 +47,11 @@ Contributors names and contact info
 * Daniel Santiago Alatorre 
 
 ## Version History
+* 2.4.0 t1(alpha 1)
+    * Inclusión visual de la tabla de paginación
+    * Primera alpha de la paginación simple
+    * Inclusión de la tecla a, A para pausar el programa
+    * Reubicación de elementos visuales
 * 2.3.0 G (release)
     * Corrección errores visualización tabla bcp
     * Version de lanzamiento Algoritmo Round Robin

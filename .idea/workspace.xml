@@ -3,6 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="78aa046d-ee71-41c6-872e-fd100f140530" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/classes/automaticGenererateProcess.py" beforeDir="false" afterPath="$PROJECT_DIR$/classes/automaticGenererateProcess.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/classes/interruptions/keyboardInterruptions.py" beforeDir="false" afterPath="$PROJECT_DIR$/classes/interruptions/keyboardInterruptions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/classes/process.py" beforeDir="false" afterPath="$PROJECT_DIR$/classes/process.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/vist/vistProcess.py" beforeDir="false" afterPath="$PROJECT_DIR$/vist/vistProcess.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
