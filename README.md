@@ -1,4 +1,4 @@
-# Simulación FCFS
+# Simulación Round Robin
 
 Este proyecto consiste en la simulación del algoritmo Round Robin
 
