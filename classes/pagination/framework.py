@@ -6,10 +6,19 @@ class Framework:
         self.__used_size = 0
         self.__id_process_associate = 0
         self.__number_framework = number_framework
-        self.__status_process = 4
+        self.__status_process = 5
+
+    def set_status_process(self, status):
+        self.__status_process = status
+
+    def get_status_process(self):
+        return self.__status_process
 
     def set_id_process_associate(self, id_process):
         self.__id_process_associate = id_process
+
+    def get_id_process_associate(self):
+        return self.__id_process_associate
 
     def set_used_size(self, used_size):
         self.__used_size = used_size
@@ -27,6 +36,8 @@ class Framework:
             chain = Fore.RED + "Blocked" + Fore.RESET
         elif self.__status_process == 4:
             chain = Fore.LIGHTBLACK_EX + "SO" + Fore.RESET
+        elif self.__status_process == 5:
+            chain = Fore.LIGHTMAGENTA_EX + "Unused" + Fore.RESET
         return chain
 
     def return_framework(self):

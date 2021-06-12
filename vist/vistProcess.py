@@ -34,18 +34,13 @@ class VistProcess:
         while continue_add:
             processNew = self.__queue_new_process.getActualProcess()
             if processNew is not None:
-                if self.__ready_process.number_enqueue_process() < 5:
-                    processNew.set_time_arrival(0)
-                    self.__table_framework.add_process_to_table(processNew)
-                    self.__ready_process.enqueue_process_ready(processNew)
-                    self.__queue_new_process.deleteLastProcess()
-                else:
-                    break
+                processNew.set_time_arrival(0)
+                self.__table_framework.add_process_to_table(processNew, 1)
+                self.__ready_process.enqueue_process_ready(processNew)
+                self.__queue_new_process.deleteLastProcess()
             else:
                 break
             continue_add = not self.__table_framework.is_full_table()
-        input()
-
 
     def __move_new_process(self):
         number_process_active = self.__ready_process.number_enqueue_process()
@@ -53,6 +48,7 @@ class VistProcess:
         if number_process_active < 5:
             process_to_enter = self.__queue_new_process.getActualProcess()
             if process_to_enter is not None:
+                self.__table_framework.add_process_to_table(process_to_enter, 1)
                 process_to_enter.set_time_arrival(self.__countProgram)
                 self.__ready_process.enqueue_process_ready(process_to_enter)
                 self.__queue_new_process.deleteLastProcess()
@@ -71,7 +67,7 @@ class VistProcess:
 
     def __print_bcp_table_at_moment(self):
         table_bcp = []
-        print(Cursor.DOWN(16))
+        print(Cursor.DOWN(31))
         generate_bcp_per_process(self.__queue_new_process, self.__bloqued_process,
                                  self.__ready_process, self.__listProcessFinish,
                                  table_bcp, self.__countProgram)
@@ -115,14 +111,17 @@ class VistProcess:
 
     def __statusOfInterruptionOutside(self, process):
         statusInterruption = self.__interruption.getStatusInterruption()
+        id_process = process.getNumberProgram() if process is not None else -1
         if statusInterruption == 1 and self.__block_e_s_process() is False:
             process.refresh_time_bloqued()
             process.set_quantum(-1)
             self.__bloqued_process.enqueue_process_bloqued(process)
             self.__cursorY -= 1
+            self.__table_framework.set_status_process_selected(id_process, 3)
             self.__ready_process.dequeue_process_ready()
         elif statusInterruption == 2 and self.__block_e_s_process() is False:
             calculate_accountant_process(process, self.__countProgram)
+            self.__table_framework.delete_process_table_framework(id_process)
             self.__listProcessFinish.addProcessComplete(process)
             self.__ready_process.dequeue_process_ready()
         elif statusInterruption == 0 or statusInterruption == 4:
@@ -130,11 +129,13 @@ class VistProcess:
             is_end_quantum = process.get_quantum() == self.__quantum
             if is_finished is True and (is_end_quantum is True or is_end_quantum is False):
                 calculate_accountant_process(process, self.__countProgram)
+                self.__table_framework.delete_process_table_framework(id_process)
                 self.__realizeOperation(process)
                 self.__listProcessFinish.addProcessComplete(process)
                 self.__ready_process.dequeue_process_ready()
             else:
                 process.set_quantum(-1)
+                self.__table_framework.set_status_process_selected(id_process, 1)
                 self.__ready_process.enqueue_process_ready(process)
                 self.__ready_process.dequeue_process_ready()
                 self.__cursorY -= 1
@@ -181,6 +182,8 @@ class VistProcess:
         time_transcurred = process.getTimeTranscurred() if process is not None else -1
         time_maximum = process.getMaximumTime() if process is not None else 0
         value_quantum = process.get_quantum() if process is not None else -1
+        id_process = process.getNumberProgram() if process is not None else -1
+        self.__table_framework.set_status_process_selected(id_process, 2)
         calculate_time_response(process, self.__countProgram)
         if time_transcurred == time_maximum:
             self.__printProcessActual(None)
@@ -215,7 +218,9 @@ class VistProcess:
 
     def __enqueue_process_bloqued_to_ready(self):
         process = self.__bloqued_process.getactual_process()
+        id_process = process.getNumberProgram() if process is not None else -1
         process.refresh_time_bloqued()
+        self.__table_framework.set_status_process_selected(id_process, 1)
         self.__ready_process.enqueue_process_ready(process)
         self.__bloqued_process.dequeue_process_bloqued()
         self.__cursorY -= 1

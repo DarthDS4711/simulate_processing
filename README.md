@@ -47,6 +47,11 @@ Contributors names and contact info
 * Daniel Santiago Alatorre 
 
 ## Version History
+* 2.4.0 t2(alpha 2)
+    * Mejoras visuales de la tabla de paginación
+    * Segunda alpha de la paginación simple
+    * Inclusión de estados en los procesos
+    * Funciones de agregar, eliminar de la tabla de paginación añadidas
 * 2.4.0 t1(alpha 1)
     * Inclusión visual de la tabla de paginación
     * Primera alpha de la paginación simple
