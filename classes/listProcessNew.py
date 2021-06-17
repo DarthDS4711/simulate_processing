@@ -14,6 +14,15 @@ class ListProcessNew:
         else:
             return None
 
+    def get_process(self, index):
+        if len(self.__list) > index:
+            return self.__list[index]
+        else:
+            return None
+
+    def delete_all_process(self):
+        self.__list.clear()
+
     def deleteLastProcess(self):
         if len(self.__list) > 0:
             self.__list.pop(0)

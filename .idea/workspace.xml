@@ -3,9 +3,14 @@
   <component name="ChangeListManager">
     <list default="true" id="78aa046d-ee71-41c6-872e-fd100f140530" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/classes/listCompleteProcess.py" beforeDir="false" afterPath="$PROJECT_DIR$/classes/listCompleteProcess.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/classes/listProcessNew.py" beforeDir="false" afterPath="$PROJECT_DIR$/classes/listProcessNew.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/classes/pagination/framework.py" beforeDir="false" afterPath="$PROJECT_DIR$/classes/pagination/framework.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/classes/pagination/tableFrames.py" beforeDir="false" afterPath="$PROJECT_DIR$/classes/pagination/tableFrames.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/classes/queue/queueBloquedProcess.py" beforeDir="false" afterPath="$PROJECT_DIR$/classes/queue/queueBloquedProcess.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/classes/queue/queueReadyProcess.py" beforeDir="false" afterPath="$PROJECT_DIR$/classes/queue/queueReadyProcess.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/generateProcess/randomDataCreateProcess.py" beforeDir="false" afterPath="$PROJECT_DIR$/generateProcess/randomDataCreateProcess.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/vist/vistProcess.py" beforeDir="false" afterPath="$PROJECT_DIR$/vist/vistProcess.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -23,6 +28,14 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
   <component name="ProjectId" id="1qUPo7jETRzZpcBEEzA09eO1EpP" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="1" id="Add" />
@@ -35,6 +48,7 @@
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
   </component>
   <component name="RunManager">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">

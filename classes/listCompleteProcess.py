@@ -17,10 +17,10 @@ class ListCompleteProcess:
             print(Cursor.FORWARD(x) + self.__list[index].toStringProcessComplete())
 
     def numberProcessComplete(self):
-        print("Numero de procesos completados ", len(self.__list))
+        return len(self.__list)
 
     def print_table_bcp(self):
-        print(Cursor.DOWN(31))
+        print(Cursor.DOWN(39))
         print(Fore.YELLOW + "Tabla BCP")
         print(Fore.RESET)
         for index in range(0, len(self.__list)):

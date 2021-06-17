@@ -47,6 +47,16 @@ Contributors names and contact info
 * Daniel Santiago Alatorre 
 
 ## Version History
+* 2.4.0 S (semi-release)
+    * Mejoras visuales de la tabla de paginación
+    * Inclusión de un nuevo estado de procesos 
+    * Corrección de errores en la visualización
+    * Inclusión en vista, del proceso actual, y nuevo de tamaño ocupado
+* 2.4.0 T1(Beta 1)
+    * Mejoras visuales de la tabla de paginación
+    * Primera beta de la tabla de la aplicación
+    * Corrección de errores en la visualización
+    * Soporte a vista sin errores a 50 elementos
 * 2.4.0 t2(alpha 2)
     * Mejoras visuales de la tabla de paginación
     * Segunda alpha de la paginación simple

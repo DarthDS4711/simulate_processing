@@ -6,10 +6,15 @@ class TableFrames:
     def __init__(self):
         self.__table_frames = []
         self.__flag_full_capacity_exceded = False
+        self.__flag_not_enougth_size = False
 
     def inicialize_table_frame(self):
         for index in range(0, 45):
             frame = Framework(index + 1)
+            if index >= 42:
+                frame.set_status_process(4)
+                frame.set_used_size(4)
+                frame.set_id_process_associate(0)
             self.__table_frames.append(frame)
 
     def __return_number_pages_required(self, process):
@@ -34,7 +39,7 @@ class TableFrames:
         return number_pages_free
 
     def is_full_table(self):
-        return self.__flag_full_capacity_exceded
+        return self.__flag_full_capacity_exceded or self.__flag_not_enougth_size
 
     def __add_process_to_frames(self, process, number_pages_required, status):
         size_process = process.get_size_process()
@@ -62,8 +67,9 @@ class TableFrames:
         number_pages_free = self.__detect_free_pages()
         if number_pages_free >= number_pages_required:
             self.__add_process_to_frames(process, number_pages_required, status)
-        if number_pages_free == 0:
-            self.__flag_full_capacity_exceded = True
+            return True
+        else:
+            return False
 
     def __set_and_search_status_process(self, id_process, status):
         for index in range(0, 42):
@@ -81,16 +87,15 @@ class TableFrames:
                 self.__table_frames[index].set_used_size(0)
                 self.__table_frames[index].set_status_process(5)
 
-
     def print_table_frame(self, y):
         number_process = 0
         text_to_print = ""
         print(Cursor.DOWN(y) + Fore.YELLOW + "Tabla de paginas" + Fore.RESET)
         for index in range(0, 45):
-            if number_process == 3:
+            if number_process == 2:
                 print(text_to_print, end="\n")
                 number_process = 0
                 text_to_print = ""
-            text_to_print = text_to_print + "  " + self.__table_frames[index].return_framework()
+            text_to_print = text_to_print + " | " + self.__table_frames[index].return_framework()
             number_process += 1
         print(text_to_print, end="\n")

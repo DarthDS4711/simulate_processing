@@ -1,5 +1,6 @@
 from classes.listCompleteProcess import ListCompleteProcess
 from operationsMathematics.operations import executeOperation
+from classes.listProcessNew import ListProcessNew
 from classes.interruptions.keyboardInterruptions import KeyboardInteruptions
 from colorama import init, Cursor, Back, Fore
 from classes.queue.queueReadyProcess import QueueReadyProcess
@@ -17,11 +18,12 @@ init()
 class VistProcess:
     def __init__(self, list_new_process, quantum):
         self.__countProgram = 0
-        self.__cursorY = 5
+        self.__cursorY = 3
         self.__listProcessFinish = ListCompleteProcess()
         self.__interruption = KeyboardInteruptions()
         self.__flag_unlock_process = False
-        self.__queue_new_process = list_new_process
+        self.__queue_new_process = ListProcessNew()
+        self.__queue_aux_new_process = list_new_process
         self.__ready_process = QueueReadyProcess()
         self.__bloqued_process = QueueBloquedProcess()
         self.__id_last_program_to_execute = self.__queue_new_process.numberProcess() + 1
@@ -31,27 +33,26 @@ class VistProcess:
     def add_process_ready(self):
         self.__table_framework.inicialize_table_frame()
         continue_add = True
+        number_process_ready = 0
         while continue_add:
-            processNew = self.__queue_new_process.getActualProcess()
-            if processNew is not None:
-                processNew.set_time_arrival(0)
-                self.__table_framework.add_process_to_table(processNew, 1)
-                self.__ready_process.enqueue_process_ready(processNew)
-                self.__queue_new_process.deleteLastProcess()
+            processNew = self.__queue_aux_new_process.getActualProcess()
+            if number_process_ready < 5:
+                if processNew is not None:
+                    processNew.set_time_arrival(0)
+                    continue_add = self.__table_framework.add_process_to_table(processNew, 1)
+                    if continue_add:
+                        self.__ready_process.enqueue_process_ready(processNew)
+                        self.__queue_aux_new_process.deleteLastProcess()
             else:
-                break
-            continue_add = not self.__table_framework.is_full_table()
-
-    def __move_new_process(self):
-        number_process_active = self.__ready_process.number_enqueue_process()
-        number_process_active += self.__bloqued_process.number_process_bloqued()
-        if number_process_active < 5:
-            process_to_enter = self.__queue_new_process.getActualProcess()
-            if process_to_enter is not None:
-                self.__table_framework.add_process_to_table(process_to_enter, 1)
-                process_to_enter.set_time_arrival(self.__countProgram)
-                self.__ready_process.enqueue_process_ready(process_to_enter)
-                self.__queue_new_process.deleteLastProcess()
+                if processNew is not None:
+                    continue_add = self.__table_framework.add_process_to_table(processNew, 6)
+                    if continue_add:
+                        self.__queue_new_process.addProcess(processNew)
+                        self.__queue_aux_new_process.deleteLastProcess()
+                else:
+                    continue_add = False
+            number_process_ready += 1
+        self.__id_last_program_to_execute = number_process_ready
 
     def __printEnqueueBloquedProcess(self):
         print(Cursor.DOWN(2))
@@ -60,14 +61,14 @@ class VistProcess:
         print("\r" + Fore.LIGHTYELLOW_EX + "Contador del programa: ",
               str(self.__countProgram), end="")
         print(Fore.RESET)
-        print(Cursor.UP(33))
+        print(Cursor.UP(38))
         self.__flag_unlock_process = is_time_bloqued_finish(self.__bloqued_process)
         calculate_bloqued_time(self.__bloqued_process)
         sleep(1)
 
     def __print_bcp_table_at_moment(self):
         table_bcp = []
-        print(Cursor.DOWN(31))
+        print(Cursor.DOWN(39))
         generate_bcp_per_process(self.__queue_new_process, self.__bloqued_process,
                                  self.__ready_process, self.__listProcessFinish,
                                  table_bcp, self.__countProgram)
@@ -77,7 +78,6 @@ class VistProcess:
     def __block_e_s_process(self):
         bloqued_len_process = self.__bloqued_process.number_process_bloqued()
         number_process = self.__ready_process.number_enqueue_process()
-        number_process += self.__queue_new_process.numberProcess()
         if bloqued_len_process > 0 and number_process == 0:
             self.__cursorY -= 1
             return True
@@ -103,51 +103,70 @@ class VistProcess:
             status_to_return = False
         return status_to_return
 
-    def __return_process_to_ready(self, process):
-        process.set_quantum(0)
+    def __return_process_to_ready(self, process, id_process):
+        process.set_quantum(-1)
+        self.__table_framework.set_status_process_selected(id_process, 1)
         self.__ready_process.enqueue_process_ready(process)
         self.__ready_process.dequeue_process_ready()
         self.__cursorY -= 1
+
+    def __move_process_to_finish(self, process, id_process, flag_error):
+        calculate_accountant_process(process, self.__countProgram)
+        self.__table_framework.delete_process_table_framework(id_process)
+        if not flag_error:
+            self.__realizeOperation(process)
+        self.__listProcessFinish.addProcessComplete(process)
+        self.__ready_process.dequeue_process_ready()
+
+    def __move_process_to_blocked(self, id_process, process):
+        process.refresh_time_bloqued()
+        process.set_quantum(-1)
+        self.__bloqued_process.enqueue_process_bloqued(process)
+        self.__cursorY -= 1
+        self.__table_framework.set_status_process_selected(id_process, 3)
+        self.__ready_process.dequeue_process_ready()
+
+    def __move_new_process(self):
+        process = create_and_return_new_process(self.__id_last_program_to_execute)
+        status_add = self.__table_framework.add_process_to_table(process, 6)
+        if status_add:
+            self.__queue_new_process.addProcess(process)
+            self.__id_last_program_to_execute += 1
+
+    def __create_new_process(self):
+        self.__move_new_process()
+        if self.__block_e_s_process() is True:
+            self.__cursorY += 1
+        else:
+            self.__cursorY -= 1
+
+    def __detect_free_space_table_framework(self):
+        process = self.__queue_new_process.getActualProcess()
+        number_process = self.__ready_process.number_enqueue_process()
+        number_process += self.__bloqued_process.number_process_bloqued()
+        if process is not None and number_process < 5:
+            self.__table_framework.set_status_process_selected(process.getNumberProgram(), 1)
+            process.set_time_arrival(self.__countProgram)
+            self.__ready_process.enqueue_process_ready(process)
+            self.__queue_new_process.deleteLastProcess()
 
     def __statusOfInterruptionOutside(self, process):
         statusInterruption = self.__interruption.getStatusInterruption()
         id_process = process.getNumberProgram() if process is not None else -1
         if statusInterruption == 1 and self.__block_e_s_process() is False:
-            process.refresh_time_bloqued()
-            process.set_quantum(-1)
-            self.__bloqued_process.enqueue_process_bloqued(process)
-            self.__cursorY -= 1
-            self.__table_framework.set_status_process_selected(id_process, 3)
-            self.__ready_process.dequeue_process_ready()
+            self.__move_process_to_blocked(id_process, process)
         elif statusInterruption == 2 and self.__block_e_s_process() is False:
-            calculate_accountant_process(process, self.__countProgram)
-            self.__table_framework.delete_process_table_framework(id_process)
-            self.__listProcessFinish.addProcessComplete(process)
-            self.__ready_process.dequeue_process_ready()
+            self.__move_process_to_finish(process, id_process, True)
         elif statusInterruption == 0 or statusInterruption == 4:
             is_finished = process.getMaximumTime() == process.getTimeTranscurred()
             is_end_quantum = process.get_quantum() == self.__quantum
             if is_finished is True and (is_end_quantum is True or is_end_quantum is False):
-                calculate_accountant_process(process, self.__countProgram)
-                self.__table_framework.delete_process_table_framework(id_process)
-                self.__realizeOperation(process)
-                self.__listProcessFinish.addProcessComplete(process)
-                self.__ready_process.dequeue_process_ready()
+                self.__move_process_to_finish(process, id_process, False)
             else:
-                process.set_quantum(-1)
-                self.__table_framework.set_status_process_selected(id_process, 1)
-                self.__ready_process.enqueue_process_ready(process)
-                self.__ready_process.dequeue_process_ready()
-                self.__cursorY -= 1
+                self.__return_process_to_ready(process, id_process)
         elif statusInterruption == 5:
-            add_new_process_to_simulation(self.__id_last_program_to_execute,
-                                          self.__queue_new_process)
-            self.__id_last_program_to_execute += 1
-            if self.__block_e_s_process() is True:
-                self.__cursorY += 1
-            else:
-                self.__cursorY -= 1
-        self.__move_new_process()
+            self.__create_new_process()
+        self.__detect_free_space_table_framework()
         self.__interruption.setStatusInterruption(0)
 
     def __printProcessActual(self, process):
@@ -185,7 +204,7 @@ class VistProcess:
         id_process = process.getNumberProgram() if process is not None else -1
         self.__table_framework.set_status_process_selected(id_process, 2)
         calculate_time_response(process, self.__countProgram)
-        if time_transcurred == time_maximum:
+        if time_transcurred >= time_maximum:
             self.__printProcessActual(None)
             self.__printEnqueueBloquedProcess()
             self.__countProgram += 1
@@ -229,10 +248,13 @@ class VistProcess:
         os.system("cls")
         print(Fore.LIGHTMAGENTA_EX + "Quantum: " + str(self.__quantum), end="\n")
         process = self.__ready_process.getactual_process()
-        self.__ready_process.print_queue(0, 2, self.__queue_new_process.numberProcess())
-        print("\n")
-        self.__listProcessFinish.printListCompleteOfProcess(80, 11)
-        print("\n")
+        process_new = self.__queue_new_process.getActualProcess()
+        size_process_new = process_new.get_size_process() if process_new is not None else " "
+        size_process = process.get_size_process() if process is not None else " "
+        id_new_process = process_new.getNumberProgram() if process_new is not None else " "
+        self.__ready_process.print_queue(2, 2, self.__queue_new_process.numberProcess()
+                                         , size_process, size_process_new, id_new_process)
+        self.__listProcessFinish.printListCompleteOfProcess(115, 8)
         print(Fore.RESET)
         print(Fore.LIGHTCYAN_EX + Cursor.FORWARD(46) +
               Cursor.UP(self.__cursorY) + "proceso en ejecucion", end="\n")
@@ -249,15 +271,8 @@ class VistProcess:
             self.__listProcessFinish.print_table_bcp()
 
     def __is_valid_continue_to_print(self):
-        if self.__queue_new_process.numberProcess() > 0:
-            return True
-        else:
-            if self.__ready_process.number_enqueue_process() > 0:
-                return True
-            elif self.__bloqued_process.number_process_bloqued() > 0:
-                return True
-            else:
-                return False
+        return (self.__ready_process.number_enqueue_process() > 0) \
+               or (self.__bloqued_process.number_process_bloqued() > 0)
 
     def __completeVistAllProcess(self):
         continue_print = self.__is_valid_continue_to_print()

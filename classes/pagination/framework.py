@@ -38,10 +38,12 @@ class Framework:
             chain = Fore.LIGHTBLACK_EX + "SO" + Fore.RESET
         elif self.__status_process == 5:
             chain = Fore.LIGHTMAGENTA_EX + "Unused" + Fore.RESET
+        elif self.__status_process == 6:
+            chain = Fore.LIGHTYELLOW_EX+ "New" + Fore.RESET
         return chain
 
     def return_framework(self):
-        chain = "page #: " + str(self.__number_framework) + " used size: " \
+        chain = "frm #: " + str(self.__number_framework) + " used size: " \
                 + str(self.__used_size) + "/4" + " stat p: " + \
                 self.__return_state_process() + " id: " + str(self.__id_process_associate)
         return chain
